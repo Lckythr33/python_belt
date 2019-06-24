@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Logged</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+<body>
+
+<div class="row">
+                <div class="col s12 m6">
+                  <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+            <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                        {% for user in users %}
+                      <span class="card-title">Welcome {{user.first_name}} {{user.last_name}}!</span>
+                    </div>
+                </div>
+                    <h4>Quotes:</h4>
+                {% for quote in quotes %}
+                            <div class="card blue-grey darken-1">
+                              <div class="card-content white-text">
+                                <p>{{quote.author}} : {{quote.quote}}</p>
+                                <p>Posted by : <a href="/users/{{quote.users.last.id}}">{{quote.users.last.first_name}}</a></p>
+                                    {{quote.likecount}} people like this quote!
+                                    {% if quote.likedby == user.id %}
+                                    <span style="color:red;"><p>Already Liked by You!</p></span><p>
+                                    {% else %}
+                                    <p> <a href="/like/{{quote.id}}"><i class="material-icons prefix">thumb_up</i></a> </p>
+                                    {% endif %}
+                                {% if quote.users.last.id == user.id %}
+                                <p><a href="/delete/{{quote.id}}">Delete</a></p>
+                                {% endif %}
+                              </div>
+                            </div>
+                    {% endfor %} 
+            {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                
+                <form action="/main" method="POST">
+                {% csrf_token %}
+                <div class="col s12 m6">
+                        <div class="card blue-grey darken-1">
+                          <div class="card-content white-text">
+                            <div style="margin: 0px 5px 5px 200px">
+                                <a href="/logout" class="waves-effect waves-light btn-small">Logout</a>
+                                <a href="/edit" class="waves-effect waves-light btn-small">Edit account</a>
+                            </div>
+                            <span class="card-title">Add a Quote!</span>
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><span style="color:red;">{{ message }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                            <div class="row">
+                                    <div class="input-field col s6">
+                                            <i class="material-icons prefix">account_box</i>
+                                            <input id="icon_prefix" type="text" class="validate" name='author'>
+                                            <label for="icon_prefix">Author:</label>
+                                    </div>
+                                    <form class="col s12">
+                                      <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">chat</i>
+                                          <textarea id="quote" class="materialize-textarea" name='quote'></textarea>
+                                          <label for="quote">Enter quote here:</label>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                          </div>
+                          <div class="card-action">
+                                <button class="btn waves-effect waves-light" type="submit" value="AddQ">Add Quote!
+                                        <i class="material-icons right">input</i>
+                                </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+</div>
+ 
+</body>
+</html>
